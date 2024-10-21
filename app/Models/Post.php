@@ -19,4 +19,9 @@ class Post extends Model
     {
         return $this->hasMany(Commentaire::class);
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }

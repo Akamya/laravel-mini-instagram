@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Commentaire extends Model
+class Like extends Model
 {
-    /** @use HasFactory<\Database\Factories\CommentaireFactory> */
+    /** @use HasFactory<\Database\Factories\LikeFactory> */
     use HasFactory;
 
     public function user()
@@ -20,8 +20,8 @@ class Commentaire extends Model
         return $this->belongsTo(Post::class);
     }
 
-    public function likes()
+    public function commentaires()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsTo(Commentaire::class);
     }
 }
