@@ -6,7 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [FeedController::class, 'index']);
+Route::get('/', [FeedController::class, 'index'])->name('feed');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('front.posts.show');
 
 Route::get('/dashboard', function () {
