@@ -1,4 +1,7 @@
 <x-guest-layout>
+
+    <h1 class="text-center text-4xl font-bold my-8">Connectez-vous pour accéder à toutes les fonctionnalités</h1>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

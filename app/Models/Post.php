@@ -24,4 +24,11 @@ class Post extends Model
     {
         return $this->hasMany(Like::class);
     }
+
+    protected function casts(): array
+{
+    return [
+        'published_at' => 'datetime',
+    ];
+}
 }

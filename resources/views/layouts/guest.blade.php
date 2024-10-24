@@ -48,11 +48,11 @@
                     </x-slot>
                     <div class="flex items-center space-x-4 justify-end">
                         <x-slot name="content">
-                            <a class="font-bold hover:text-emerald-600 transition" href="{{ route('profile.edit') }}">Profil</a>
+                            <a class="font-bold hover:text-emerald-600 transition" href="{{ route('profile.edit') }}">Profile</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    {{ __('Log Out') }}
+                                    {{ __('Déconnexion') }}
                                 </button>
                             </form>
                         </x-slot>

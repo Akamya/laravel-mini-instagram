@@ -10,7 +10,7 @@ class FeedController extends Controller
     // Affiche les posts sur la page feed avec un paginate.
     public function index()
     {
-        $posts = Post::paginate(12);
+        $posts = Post::orderByDesc('updated_at')->paginate(12);
 
         return view('feed.index', [
             'posts' => $posts,
