@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+// Log::info() pour voir logs dans storage/logs/laravel.log
+
 class PostController extends Controller
 {
     /**
@@ -66,7 +68,7 @@ class PostController extends Controller
 
         // Si il y a une image, on la sauvegarde
         if ($request->hasFile('img_path')) {
-            $path = $request->file('img_path')->store('articles', 'public');
+            $path = $request->file('img_path')->store('posts', 'public');
             $post->img_path = $path;
         }
 
@@ -92,15 +94,15 @@ class PostController extends Controller
      */
     public function update(PostUpdateRequest $request, Post $post)
 {
-    Log::info($request);
+    // Log::info($request);
     // Vérifie si une nouvelle image a été fournie
     if ($request->hasFile('img_path')) {
-        Log::info('cc2');
+        // Log::info('cc2');
         // Gérer l'upload de la nouvelle image
         $path = $request->file('img_path')->store('posts', 'public'); // Stocker l'image
         $post->img_path = $path; // Mettre à jour avec le chemin de la nouvelle image
     }
-    Log::info('cc3');
+    // Log::info('cc3');
 
     // Met à jour les autres champs
     $post->body = $request->validated()['body'];
