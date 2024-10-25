@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,4 +77,24 @@ class ProfileController extends Controller
 
     return Redirect::route('profile.edit')->with('status', 'avatar-updated');
 }
+
+/**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        // Trouve user
+        $user = User::findOrFail($id);
+        // Trouve les posts de user
+        $posts = Post::query()
+        ->where('user_id', '=', $id)
+        ->orderByDesc('updated_at')
+        ->paginate(12);
+
+        // Va vers la vue profile show avec le user et ses posts
+        return view('profile.show', [
+            'user' => $user,
+            'posts' => $posts,
+        ]);
+    }
 }

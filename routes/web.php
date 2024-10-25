@@ -20,6 +20,8 @@ Route::get('/dashboard', function () {
 
 Route::get('/', [FeedController::class, 'index'])->name('feed');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('front.posts.show');
+Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+
 
 //J'ai dû changé l'ordre de mes routes (le middleware auth en 1er) car il y a une IMPORTANCE de PRIORITE des routes surtout quand on utilise des paramètres dynamiques dans les URL (dans mon cas: posts/{id} et posts/create).
 //Laravel pensait que mon create était un ID... Donc erreur 404 :)

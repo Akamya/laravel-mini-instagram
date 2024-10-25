@@ -16,13 +16,15 @@
     </div>
 
     <div class="flex items-center mt-10 border-t border-gray-300 pt-6">
-      <x-avatar class="h-16 w-16 rounded-full shadow-lg" :user="$post->user" />
-      <div class="ml-4">
-        <div class="text-gray-800 font-semibold text-lg">{{ $post->user->username }}</div>
-        <div class="text-gray-500 text-sm">{{ $post->user->email }}</div>
-      </div>
+        {{-- Lien vers la page du profile --}}
+        <a href="{{ route('profile.show', $post->user) }}">
+            <x-avatar class="h-16 w-16 rounded-full shadow-lg" :user="$post->user" />
+            <div class="ml-4">
+                <div class="text-gray-800 font-semibold text-lg">{{ $post->user->username }}</div>
+                <div class="text-gray-500 text-sm">{{ $post->user->email }}</div>
+            </div>
+        </a>
     </div>
-
     <div class="mt-10 flex justify-center">
       <a
         href="{{ route('feed') }}"
