@@ -14,13 +14,38 @@
             <form method="POST" action="{{ route('posts.store') }}" class="space-y-6 text-gray-600" enctype="multipart/form-data">
                 @csrf
 
+                <!-- Image Preview -->
+                <div class="mt-4">
+                    <img id="imagePreview" class="w-80 h-80 object-cover rounded-lg shadow-md" src="#" alt="Image preview" style="display: none;" />
+                </div>
+
                 <!-- Image Upload -->
                 <div>
                     <x-input-label for="img_path" :value="__('Image')" class="text-lg font-semibold text-gray-800" />
-                    <x-text-input id="img_path" class="block mt-2 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                                  type="file" name="img_path" />
+                    <x-text-input id="img_path" class="block mt-2 w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" type="file" name="img_path" accept="image/*" onchange="previewImage(event)" />
                     <x-input-error :messages="$errors->get('img_path')" class="mt-2" />
+
                 </div>
+
+                {{-- Script pour mettre à jour l'image dès qu'on en sélectionne une --}}
+                <script>
+                    function previewImage(event) {
+                        const file = event.target.files[0];
+                        const preview = document.getElementById('imagePreview');
+
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                preview.src = e.target.result;
+                                preview.style.display = 'block';
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            preview.style.display = 'none';
+                        }
+                    }
+                </script>
+
 
                 <!-- Text Area for Post Body -->
                 <div>

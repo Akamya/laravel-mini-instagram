@@ -4,7 +4,9 @@
       class="w-full h-full aspect-square object-cover object-center"
       src="{{ asset('storage/' . $user->pdp) }}"
       alt="{{ $user->username }}"
+      id="imagePreview"
     />
+
     @else
     <div class="w-full h-full aspect-square flex items-center justify-center bg-indigo-100">
       <span class="text-2xl font-medium text-indigo-800">

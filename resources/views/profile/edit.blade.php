@@ -21,7 +21,7 @@
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    @include('profile.partials.update-avatar-form')
+                    @include('profile.partials.update-bio-form')
                 </div>
             </div>
             {{-- Pour la bio --}}

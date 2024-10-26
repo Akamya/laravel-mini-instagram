@@ -11,6 +11,8 @@ Route::middleware('auth')->group(function (){
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::patch('/profile/bio', [ProfileController::class, 'updateBio'])->name('profile.bio.update');
+    Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
     Route::resource('posts', PostController::class);
 });
 
@@ -20,7 +22,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/', [FeedController::class, 'index'])->name('feed');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('front.posts.show');
-Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+
 
 
 //J'ai dû changé l'ordre de mes routes (le middleware auth en 1er) car il y a une IMPORTANCE de PRIORITE des routes surtout quand on utilise des paramètres dynamiques dans les URL (dans mon cas: posts/{id} et posts/create).

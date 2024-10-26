@@ -97,4 +97,21 @@ class ProfileController extends Controller
             'posts' => $posts,
         ]);
     }
+
+    public function updateBio(Request $request): RedirectResponse
+{
+    // Validation de la bio sans passer par une form request
+    $request->validate([
+        'bio' => ['required', 'string', 'max:300'],
+    ]);
+
+    // Si la bio est valide, on la sauvegarde
+    if ($request->has('bio')) {
+        $user = $request->user();
+        $user->bio = $request->input('bio'); // Assignation de la biographie
+        $user->save();
+    }
+
+    return Redirect::route('profile.edit')->with('status', 'bio-updated');
+}
 }
