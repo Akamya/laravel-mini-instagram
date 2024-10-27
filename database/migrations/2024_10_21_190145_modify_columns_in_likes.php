@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('likes', function (Blueprint $table) {
             $table->foreignId('post_id')->nullable()->change();
-            $table->foreignId('commentaire_id')->nullable()->change();
+            $table->foreignId('comment_id')->nullable()->change();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('likes', function (Blueprint $table) {
             $table->foreignId('post_id')->nullable(false)->change();
-            $table->foreignId('commentaire_id')->nullable(false)->change();
+            $table->foreignId('comment_id')->nullable(false)->change();
         });
     }
 };

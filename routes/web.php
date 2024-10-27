@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
@@ -13,6 +14,8 @@ Route::middleware('auth')->group(function (){
     Route::patch('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
     Route::patch('/profile/bio', [ProfileController::class, 'updateBio'])->name('profile.bio.update');
     Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/posts/{post}/comments', [PostController::class, 'addComment'])->name('front.posts.comments.add');
+    Route::delete('/posts/{post}/comments/{comment}', [PostController::class, 'deleteComment'])->name('front.posts.comments.delete');
     Route::resource('posts', PostController::class);
 });
 

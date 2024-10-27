@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostCreateRequest;
 use App\Http\Requests\PostUpdateRequest;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 // Log::info() pour voir logs dans storage/logs/laravel.log
@@ -17,13 +19,24 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show($id)
-    {
-        $post = Post::findOrFail($id);
+{
+    // On récupère l'article et on renvoie une erreur 404 si l'article n'existe pas
+    $post = Post::findOrFail($id);
+    // On récupère les commentaires de l'article, avec les utilisateurs associés (via la relation)
+    // On les trie par date de création (le plus ancien en premier)
+    $comments = $post
+        ->comments()
+        ->with('user')
+        ->orderBy('created_at', 'DESC')
+        ->get()
+    ;
 
-        return view('front.posts.show', [
-            'post' => $post,
-        ]);
-    }
+    // On renvoie la vue avec les données
+    return view('front.posts.show', [
+        'post' => $post,
+        'comments' => $comments,
+    ]);
+}
 
     /**
      * Display a listing of the resource.
@@ -121,4 +134,35 @@ class PostController extends Controller
         $post->delete();
         return redirect()->back();
     }
+
+    public function addComment(Request $request, Post $post)
+{
+    // On vérifie que l'utilisateur est authentifié
+    $request->validate([
+        'body' => 'required|string|max:2000',
+    ]);
+
+    // On crée le commentaire
+    $comment = $post->comments()->make();
+    // On remplit les données
+    $comment->body = $request->input('body');
+    $comment->user_id = Auth::user()->id;
+    // On sauvegarde le commentaire
+    $comment->save();
+
+    // On redirige vers la page de l'article
+    return redirect()->back();
+}
+
+public function deleteComment(Post $post, Comment $comment)
+{
+    // On vérifie que l'utilisateur à le droit de supprimer le commentaire
+    Gate::authorize('delete', $comment);
+
+    // On supprime le commentaire
+    $comment->delete();
+
+    // On redirige vers la page de l'article
+    return redirect()->back();
+}
 }
