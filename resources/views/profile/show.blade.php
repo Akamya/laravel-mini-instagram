@@ -10,6 +10,27 @@
         </div>
       </div>
 
+      <div class="flex">
+        @if ($isFollowing)
+            <form action="{{ route('profile.show.unfollow', $user) }}" method="POST" class="flex p-4">
+                @csrf @method('DELETE')
+                <button type="submit" class="font-bold bg-white text-gray-700 px-4 py-2 rounded shadow">
+                    <x-heroicon-c-user-minus class="h-5 w-5"/>
+                </button>
+            </form>
+        @else
+            <form action="{{ route('profile.show.follow', $user) }}" method="POST" class="flex p-4">
+                @csrf
+                <button type="submit" class="font-bold bg-white text-gray-700 px-4 py-2 rounded shadow">
+                    <x-heroicon-c-user-plus class="h-5 w-5" />
+                </button>
+            </form>
+        @endif
+        <div class="flex items-center space-x-2">
+            <div class="text-sm text-gray-500">{{ $followersCount }}</div>
+        </div>
+    </div>
+
       <!-- Bio section -->
       <div class="mt-4 text-base text-gray-700 leading-relaxed text-center max-w-2xl mx-auto px-4">
         {!! \nl2br(e($user->bio)) !!}

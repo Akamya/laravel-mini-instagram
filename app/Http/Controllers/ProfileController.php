@@ -84,7 +84,8 @@ class ProfileController extends Controller
     public function show($id)
     {
         // Trouve user
-        $user = User::findOrFail($id);
+        $user = User::with('followers', 'following')
+        ->findOrFail($id);
 
         // Trouve les posts de user
         $posts = Post::query()
@@ -99,13 +100,20 @@ class ProfileController extends Controller
         ->comments()
         ->orderByDesc('created_at')
         ->get();
-;
+
+        // Compte le nombre de followers pour ce user
+        $followersCount = $user->followers()->count();
+
+        // Vérifie si l'utilisateur connecté a déjà follow ce user
+        $isFollowing = $user->followers()->where('follower_id', Auth::id())->exists();
 
         // Va vers la vue profile show avec le user et ses posts
         return view('profile.show', [
             'user' => $user,
             'posts' => $posts,
             'comments' => $comments,
+            'followersCount' => $followersCount,
+            'isFollowing' => $isFollowing,
         ]);
     }
 

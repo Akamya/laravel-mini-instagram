@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function (){
 
     Route::post('/like/posts/{post_id}', [LikeController::class, 'likePost'])->name('front.posts.like.add');
     Route::delete('/like/posts/{post_id}', [LikeController::class, 'unlikePost'])->name('front.posts.like.delete');
+
+    Route::post('/follow/users/{user_id}', [FollowController::class, 'follow'])->name('profile.show.follow');
+    Route::delete('/follow/users/{user_id}', [FollowController::class, 'unfollow'])->name('profile.show.unfollow');
 
     Route::resource('posts', PostController::class);
 });
