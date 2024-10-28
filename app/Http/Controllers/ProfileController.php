@@ -85,16 +85,26 @@ class ProfileController extends Controller
     {
         // Trouve user
         $user = User::findOrFail($id);
+
         // Trouve les posts de user
         $posts = Post::query()
         ->where('user_id', '=', $id)
-        ->orderByDesc('updated_at')
+        ->withCount('comments')
+        ->orderByDesc('published_at')
         ->paginate(12);
+
+        // Les commentaires de l'utilisateur triés par date de création
+        $comments = $user
+        ->comments()
+        ->orderByDesc('created_at')
+        ->get();
+;
 
         // Va vers la vue profile show avec le user et ses posts
         return view('profile.show', [
             'user' => $user,
             'posts' => $posts,
+            'comments' => $comments,
         ]);
     }
 

@@ -29,7 +29,7 @@ class PostFactory extends Factory
 
                 return $path;
             },
-            'published_at' => fake()->dateTimeBetween('-2 months', '+ 1 month'),
+            'published_at' => fake()->dateTimeBetween('-2 months', 'now'),
             'user_id' => User::get()->random()->id,
         ];
     }

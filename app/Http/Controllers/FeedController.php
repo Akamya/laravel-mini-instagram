@@ -31,6 +31,7 @@ class FeedController extends Controller
                       ->orWhere('body', 'LIKE', '%' . $searchTerm . '%'); //or where body like string dans la barre de recherche
             });
         })
+        ->withCount('comments')
         ->orderByDesc('published_at')
         ->paginate(12)
         ->withQueryString(); //conserve la recherche à travers la pagination
