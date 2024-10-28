@@ -32,6 +32,7 @@ class FeedController extends Controller
             });
         })
         ->withCount('comments')
+        ->withCount('likes')
         ->orderByDesc('published_at')
         ->paginate(12)
         ->withQueryString(); //conserve la recherche à travers la pagination

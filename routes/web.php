@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -14,8 +15,13 @@ Route::middleware('auth')->group(function (){
     Route::patch('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar.update');
     Route::patch('/profile/bio', [ProfileController::class, 'updateBio'])->name('profile.bio.update');
     Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+
     Route::post('/posts/{post}/comments', [PostController::class, 'addComment'])->name('front.posts.comments.add');
     Route::delete('/posts/{post}/comments/{comment}', [PostController::class, 'deleteComment'])->name('front.posts.comments.delete');
+
+    Route::post('/like/posts/{post_id}', [LikeController::class, 'likePost'])->name('front.posts.like.add');
+    Route::delete('/like/posts/{post_id}', [LikeController::class, 'unlikePost'])->name('front.posts.like.delete');
+
     Route::resource('posts', PostController::class);
 });
 

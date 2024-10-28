@@ -19,24 +19,33 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show($id)
-{
-    // On récupère l'article et on renvoie une erreur 404 si l'article n'existe pas
-    $post = Post::findOrFail($id);
-    // On récupère les commentaires de l'article, avec les utilisateurs associés (via la relation)
-    // On les trie par date de création (le plus ancien en premier)
-    $comments = $post
-        ->comments()
-        ->with('user')
-        ->orderBy('created_at', 'DESC')
-        ->get()
-    ;
+    {
+        // On récupère le post avec ses commentaires (et leurs users) et les likes, on renvoie une erreur 404 si le post n'existe pas
+        $post = Post::with('comments.user', 'likes') // Charge les commentaires et leurs auteurs, et les likes
+        ->findOrFail($id);
 
-    // On renvoie la vue avec les données
-    return view('front.posts.show', [
-        'post' => $post,
-        'comments' => $comments,
-    ]);
-}
+        // Compte le nombre de likes pour ce post
+        $likesCount = $post->likes()->count();
+
+        // Vérifie si l'utilisateur connecté a déjà liké ce post
+        $hasLiked = $post->likes()->where('user_id', Auth::id())->exists();
+
+        // On récupère les commentaires de l'article, avec les utilisateurs associés (via la relation)
+        // On les trie par date de création (le plus ancien en premier)
+        $comments = $post
+            ->comments()
+            ->with('user')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        // On renvoie la vue avec les données
+        return view('front.posts.show', [
+            'post' => $post,
+            'comments' => $comments,
+            'likesCount' => $likesCount,
+            'hasLiked' => $hasLiked,
+        ]);
+    }
 
     /**
      * Display a listing of the resource.

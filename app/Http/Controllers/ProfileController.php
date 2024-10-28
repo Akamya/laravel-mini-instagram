@@ -90,6 +90,7 @@ class ProfileController extends Controller
         $posts = Post::query()
         ->where('user_id', '=', $id)
         ->withCount('comments')
+        ->withCount('likes')
         ->orderByDesc('published_at')
         ->paginate(12);
 

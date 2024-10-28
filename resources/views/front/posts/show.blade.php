@@ -8,6 +8,29 @@
             class="rounded shadow aspect-auto object-cover object-center" />
     </div>
 
+    <div class="flex">
+        @if ($hasLiked)
+            <form action="{{ route('front.posts.like.delete', $post) }}" method="POST" class="flex p-4">
+                @csrf @method('DELETE')
+                <button type="submit" class="font-bold bg-white text-gray-700 px-4 py-2 rounded shadow">
+                    <x-heroicon-s-heart class="h-5 w-5" />
+                </button>
+            </form>
+        @else
+            <form action="{{ route('front.posts.like.add', $post) }}" method="POST" class="flex p-4">
+                @csrf
+                <button type="submit" class="font-bold bg-white text-gray-700 px-4 py-2 rounded shadow">
+                    <x-heroicon-o-heart class="h-5 w-5" />
+                </button>
+            </form>
+        @endif
+        <div class="flex items-center space-x-2">
+            <div class="text-sm text-gray-500">{{ $likesCount }}</div>
+        </div>
+    </div>
+
+
+
     <div class="mt-4">{!! \nl2br(e($post->body)) !!}</div>
 
     <div class="flex mt-8">
