@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FeedController extends Controller
 {
     public function index(Request $request)
 {
     $searchTerm = $request->query('search'); //string de la barre de recherche
+    $user = Auth::user();
+
+    // Récupérer les ID des utilisateurs suivis par l'utilisateur connecté
+    $followingIds = $user ? $user->following()->pluck('users.id')->toArray() : [];
 
     // Rechercher les utilisateurs correspondant au terme 'search' dans `username`
     $users = User::query()
@@ -33,6 +38,8 @@ class FeedController extends Controller
         })
         ->withCount('comments')
         ->withCount('likes')
+        ->orderByRaw("FIELD(user_id, " . implode(',', $followingIds) . ") DESC") // Priorité aux utilisateurs suivis, gros merci chatgpt
+        ->orderByDesc('likes_count')
         ->orderByDesc('published_at')
         ->paginate(12)
         ->withQueryString(); //conserve la recherche à travers la pagination
