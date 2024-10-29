@@ -36,6 +36,7 @@ class FeedController extends Controller
                       ->orWhere('body', 'LIKE', '%' . $searchTerm . '%'); //or where body like string dans la barre de recherche
             });
         })
+        ->with('user')
         ->withCount('comments')
         ->withCount('likes')
         ->orderByRaw("FIELD(user_id, " . implode(',', $followingIds) . ") DESC") // Priorité aux utilisateurs suivis, gros merci chatgpt
@@ -45,8 +46,8 @@ class FeedController extends Controller
         ->withQueryString(); //conserve la recherche à travers la pagination
 
     return view('feed.index', [
-        'users' => $users,
         'posts' => $posts,
+        'followingIds' => $followingIds,
     ]);
 }
 

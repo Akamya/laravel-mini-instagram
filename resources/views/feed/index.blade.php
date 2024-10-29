@@ -24,7 +24,7 @@
     <ul class="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
       @foreach ($posts as $post)
       <li>
-        <x-post-card :post="$post" />
+        <x-post-card :post="$post" :followingIds="$followingIds" />
       </li>
       @endforeach
     </ul>
