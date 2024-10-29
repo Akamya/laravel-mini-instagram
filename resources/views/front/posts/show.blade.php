@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="mb-4 text-xs text-gray-500">
-        {{ $post->published_at?->diffForHumans() }}
+        {{ $post->published_at->format('d M Y à H:i')}}
     </div>
 
     <div class="flex items-center justify-center">

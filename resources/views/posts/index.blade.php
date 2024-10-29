@@ -26,6 +26,8 @@
                                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                                     <th class="py-3 px-6 text-left">Image</th>
                                     <th class="py-3 px-6 text-left">Texte</th>
+                                    <th class="py-3 px-6 text-left">Likes</th>
+                                    <th class="py-3 px-6 text-left">Commentaires</th>
                                     <th class="py-3 px-6 text-left">Date de publication</th>
                                     <th class="py-3 px-6 text-left">Dernière modification</th>
                                     <th class="py-3 px-6 text-center">Actions</th>
@@ -41,7 +43,13 @@
                                             {{ Str::limit($post->body, 120) }}
                                         </td>
                                         <td class="py-3 px-6">
-                                            {{ $post->published_at?->diffForHumans() ?? 'Pas de date' }}
+                                            {{ $post->likes_count }}
+                                        </td>
+                                        <td class="py-3 px-6">
+                                            {{ $post->comments_count }}
+                                        </td>
+                                        <td class="py-3 px-6">
+                                            {{ $post->published_at?->format('d M Y à H:i') ?? 'Pas de date' }}
                                         </td>
                                         <td class="py-3 px-6">
                                             {{ $post->updated_at->diffForHumans() }}

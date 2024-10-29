@@ -6,7 +6,7 @@
         <div class="text-gray-800 font-bold">{{ $user->username }}</div>
         <div class="text-gray-700 text-sm">{{ $user->email }}</div>
         <div class="text-gray-500 text-xs">
-            Membre depuis {{ $user->created_at->diffForHumans() }}
+            Membre depuis {{ $user->created_at->format('d M Y ') }}
         </div>
       </div>
 
@@ -28,6 +28,8 @@
         @endif
         <div class="flex items-center space-x-2">
             <div class="text-sm text-gray-500">{{ $followersCount }}</div>
+            <x-heroicon-s-user-group class="h-5 w-5"/>
+            <div class="text-sm text-gray-500">{{ $followingCount }}</div>
         </div>
     </div>
 
@@ -68,40 +70,42 @@
 
         <div class="flex-col space-y-4">
           @forelse ($comments as $comment)
-          <div class="flex bg-white rounded-md shadow p-4 space-x-4">
-            <div class="flex justify-start items-start h-full">
-              <x-avatar class="h-10 w-10" :user="$comment->user" />
-            </div>
-            <div class="flex flex-col justify-center w-full space-y-4">
-              <div class="flex justify-between">
-                <div class="flex space-x-4 items-center justify-center">
-                  <div class="flex flex-col justify-center">
-                    <div class="text-gray-700">{{ $comment->user->username }}</div>
-                    <div class="text-gray-500 text-sm">
-                      {{ $comment->created_at->diffForHumans() }}
+          <a href="{{ route('front.posts.show', $comment->post_id) }}">
+            <div class="flex bg-white rounded-md shadow p-4 space-x-4">
+                <div class="flex justify-start items-start h-full">
+                <x-avatar class="h-10 w-10" :user="$comment->user" />
+                </div>
+                <div class="flex flex-col justify-center w-full space-y-4">
+                <div class="flex justify-between">
+                    <div class="flex space-x-4 items-center justify-center">
+                    <div class="flex flex-col justify-center">
+                        <div class="text-gray-700">{{ $comment->user->username }}</div>
+                        <div class="text-gray-500 text-sm">
+                        {{ $comment->created_at->diffForHumans() }}
+                        </div>
                     </div>
-                  </div>
+                    </div>
+                    <div class="flex justify-center">
+                    @can('delete', $comment)
+                    <button
+                        x-data="{ id: {{ $comment->id }} }"
+                        x-on:click.prevent="window.selected = id; $dispatch('open-modal', 'confirm-comment-deletion');"
+                        type="submit"
+                        class="font-bold bg-white text-gray-700 px-4 py-2 rounded shadow"
+                    >
+                        <x-heroicon-o-trash class="h-5 w-5" />
+                    </button>
+                    @endcan
+                    </div>
                 </div>
-                <div class="flex justify-center">
-                  @can('delete', $comment)
-                  <button
-                    x-data="{ id: {{ $comment->id }} }"
-                    x-on:click.prevent="window.selected = id; $dispatch('open-modal', 'confirm-comment-deletion');"
-                    type="submit"
-                    class="font-bold bg-white text-gray-700 px-4 py-2 rounded shadow"
-                  >
-                    <x-heroicon-o-trash class="h-5 w-5" />
-                  </button>
-                  @endcan
+                <div class="flex flex-col justify-center w-full text-gray-700">
+                    <p class="border bg-gray-100 rounded-md p-4">
+                    {{ $comment->body }}
+                    </p>
                 </div>
-              </div>
-              <div class="flex flex-col justify-center w-full text-gray-700">
-                <p class="border bg-gray-100 rounded-md p-4">
-                  {{ $comment->body }}
-                </p>
-              </div>
+                </div>
             </div>
-          </div>
+          </a>
           @empty
           <div class="flex bg-white rounded-md shadow p-4 space-x-4">
             Aucun commentaire pour l'instant

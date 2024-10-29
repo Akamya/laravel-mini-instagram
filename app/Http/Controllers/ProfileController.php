@@ -104,6 +104,9 @@ class ProfileController extends Controller
         // Compte le nombre de followers pour ce user
         $followersCount = $user->followers()->count();
 
+        // Compte le nombre de following pour ce user
+        $followingCount = $user->following()->count();
+
         // Vérifie si l'utilisateur connecté a déjà follow ce user
         $isFollowing = $user->followers()->where('follower_id', Auth::id())->exists();
 
@@ -113,6 +116,7 @@ class ProfileController extends Controller
             'posts' => $posts,
             'comments' => $comments,
             'followersCount' => $followersCount,
+            'followingCount' => $followingCount,
             'isFollowing' => $isFollowing,
         ]);
     }

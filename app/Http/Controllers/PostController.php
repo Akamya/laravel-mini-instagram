@@ -55,9 +55,12 @@ class PostController extends Controller
         // Requête SQL pour afficher les posts de l'utilisateur.
         $posts = Post::query()
         ->where('user_id', '=', Auth::id())
+        ->withCount('comments') // Compte les commentaires
+        ->withCount('likes')     // Compte les likes
         ->orderByDesc('updated_at')
         ->paginate(10);
 
+        // dd($posts);
         return view(
             'posts.index',
             [
