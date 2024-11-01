@@ -18,27 +18,24 @@
 <body class="font-sans text-gray-900 antialiased">
     <div class="min-h-screen flex flex-col pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-100">
         <div class="container mx-auto flex flex-col space-y-10">
-            <nav class="flex justify-between items-center py-2">
+            <nav class="flex justify-between items-center py-4 px-6"> <!-- Ajout de padding horizontal -->
                 <div>
-                    <a href="/"
-                        class="group font-bold text-3xl flex items-center space-x-4 hover:text-emerald-600 transition ">
-                        <x-application-logo
-                            class="w-10 h-10 fill-current text-gray-500 group-hover:text-emerald-500 transition" />
+                    <a href="/" class="group font-bold text-3xl flex items-center space-x-4 hover:text-emerald-600 transition">
+                        <x-application-logo class="w-10 h-10 fill-current text-gray-500 group-hover:text-emerald-500 transition" />
                         <span>Mini-Instagram</span>
                     </a>
                 </div>
                 @guest
                 <div class="flex items-center space-x-4 justify-end">
-                    <a class="font-bold hover:text-emerald-600 transition" href="{{ route('login') }}">Se Connecter</a>
-                    <a class="font-bold hover:text-emerald-600 transition" href="{{ route('register') }}">S'inscrire</a>
+                    <a class="font-bold text-gray-700 hover:text-emerald-600 transition" href="{{ route('login') }}">Login</a>
+                    <a class="font-bold text-gray-700 hover:text-emerald-600 transition" href="{{ route('register') }}">Register</a>
                 </div>
                 @endguest
                 @auth
                 <x-dropdown>
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
-
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -46,27 +43,28 @@
                             </div>
                         </button>
                     </x-slot>
-                    <div class="flex items-center space-x-4 justify-end">
-                        <x-slot name="content">
-                            <a class="font-bold hover:text-emerald-600 transition" href="{{ route('profile.edit') }}">Profile</a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    {{ __('Déconnexion') }}
-                                </button>
-                            </form>
-                        </x-slot>
-                    </div>
+                    <x-slot name="content">
+                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600 transition" href="{{ route('profile.edit') }}">Profile</a>
+                        <form method="POST" action="{{ route('logout') }}" class="block">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600 transition">
+                                Logout
+                            </button>
+                        </form>
+                    </x-slot>
                 </x-dropdown>
                 @endauth
             </nav>
 
+
             <main>
                 {{ $slot }}
             </main>
-            <x-footer-card/>
+
         </div>
+
     </div>
+    <x-footer-card />
 </body>
 
 </html>

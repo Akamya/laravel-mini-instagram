@@ -39,7 +39,18 @@ class FeedController extends Controller
         ->with('user')
         ->withCount('comments')
         ->withCount('likes')
-        ->orderByRaw("FIELD(user_id, " . implode(',', $followingIds) . ") DESC") // Priorité aux utilisateurs suivis, gros merci chatgpt
+        ->orderByRaw(
+            count($followingIds) > 0
+                ? "(
+                    IF(user_id IN (" . implode(',', $followingIds) . "),
+                        IF((SELECT COUNT(*) FROM likes WHERE post_id = posts.id AND user_id = " . Auth::id() . ") > 0, 1, 2),
+                        3
+                    )
+                ) ASC, likes_count DESC, published_at DESC"
+                : 'likes_count DESC'
+                // Si l’utilisateur actuel a liké le post d’un utilisateur suivi, il obtient la priorité 1. Si l’utilisateur suivi n’a pas reçu de like de l’utilisateur actuel, il obtient la priorité 2.Les autres posts reçoivent une priorité 3.
+
+        ) // Cela permet aux posts likés des personnes suivies d'apparaître en premier, suivis des autres posts des personnes suivies, puis des posts restants triés par popularité et date. MERCI CHATGPT
         ->orderByDesc('likes_count')
         ->orderByDesc('published_at')
         ->paginate(12)
@@ -47,6 +58,7 @@ class FeedController extends Controller
 
     return view('feed.index', [
         'posts' => $posts,
+        // 'users' => $users,
         'followingIds' => $followingIds,
     ]);
 }
