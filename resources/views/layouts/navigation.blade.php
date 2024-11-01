@@ -7,17 +7,22 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('feed') }}" aria-label="Accueil">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <p>Home</p>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
-                        {{ __('Créer un post') }}
+                    <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
+                        {{ __('Profile') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
-                        {{ __('Mes posts') }}
+                        {{ __('My posts') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
+                        {{ __('Create a post') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -37,9 +42,9 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        {{-- <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
-                        </x-dropdown-link>
+                        </x-dropdown-link> --}}
 
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -67,11 +72,11 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
-                {{ __('Créer un post') }}
+                {{ __('Create a post') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
-                {{ __('Mes Posts') }}
+                {{ __('My Posts') }}
             </x-responsive-nav-link>
         </div>
 
