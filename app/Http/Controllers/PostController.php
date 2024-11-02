@@ -119,6 +119,7 @@ class PostController extends Controller
      */
     public function update(PostUpdateRequest $request, Post $post)
 {
+    Gate::authorize('edit', $post);
     // Log::info($request);
     // Vérifie si une nouvelle image a été fournie
     if ($request->hasFile('img_path')) {
@@ -143,6 +144,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
         $post->delete();
         return redirect()->back();
     }
